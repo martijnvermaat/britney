@@ -7,4 +7,4 @@
 # terms and conditions for copying, distribution and
 # modification of Britney.
 
-java -jar ../lib/britney.jar
+java -jar ../lib/britney.jar $*
