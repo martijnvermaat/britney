@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+
+<!-- 
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* Britney - A simple untyped Lambda Calculus interpreter    *
+*                                                           *
+* This file is part of Britney.                             * 
+* See the file "LICENSE" for copyright information and the  *
+* terms and conditions for copying, distribution and        *
+* modification of Britney.                                  *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+
+This build.xml is inspired by SableCC's build.xml.
+-->
+
+<project name="britney" default="compile" basedir=".">
+
+<!-- 
+=====================================
+Global Properties 
+=====================================
+-->
+
+  <property name="package" value="britney"/>
+  <property name="version" value="0.3"/>
+
+  <property name="package.name" value="${package}-${version}"/>
+
+  <property name="src.dir" value="src"/>
+  <property name="build.dir" value="build"/>
+  <property name="dist.dir" value="dist"/>
+  <property name="bin.dir" value="etc/bin"/>
+
+  <property name="manifest" value="etc/manifest"/>
+
+  <property file="${user.home}/.ant.properties" />
+
+  <taskdef name="sablecc" classname="org.sablecc.ant.taskdef.Sablecc"/>
+
+<!--
+=====================================
+Compile Target
+=====================================
+-->
+
+  <target
+    name="compile"
+    depends="sablecc"
+    description="compile source files"
+  >
+
+    <mkdir dir="${build.dir}/classes"/>
+
+    <javac 
+      srcdir="${src.dir}/java"
+      destdir="${build.dir}/classes"
+      includes="**/*.java" 
+      depend="yes"
+    />
+
+  </target>
+
+<!--
+=====================================
+SableCC Target
+=====================================
+-->
+
+  <target
+    name="sablecc"
+    description="generate parser source files"
+  >
+
+    <sablecc
+      src="${src.dir}"
+      outputdirectory="${src.dir}/java"
+      includes="britney.grammar"
+    />
+
+  </target>
+
+<!--
+=====================================
+Dist Target
+=====================================
+-->
+
+  <target 
+    name="dist" 
+    depends="srcdist,jardist"
+    description="build main distribution files"
+  />
+
+<!--
+=====================================
+Srcdist Target
+=====================================
+-->
+
+  <target 
+    name="srcdist"
+    depends="sablecc,jar"
+    description="build distribution including source"
+  >
+
+    <mkdir dir="${dist.dir}"/>
+
+    <copy todir="${package.name}/src" includeEmptyDirs="no">
+      <fileset dir="${src.dir}/java">
+        <include name="**/*.java"/>
+      </fileset>
+    </copy>
+
+    <copy file="${build.dir}\packages\${package}.jar" todir="${package.name}/lib"/>
+
+    <copy todir="${package.name}/bin">
+      <fileset dir="${bin.dir}"/>
+    </copy>
+
+    <copy file="${manifest}" todir="${package.name}/etc"/>
+
+    <copy todir="${package.name}">
+      <fileset dir="${basedir}">
+        <include name="LICENSE"/>
+        <include name="README"/>
+        <include name="CHANGES"/>
+      </fileset>
+    </copy>
+
+    <tar tarfile="${package.name}-src.tar" basedir="${basedir}" includes="${package.name}/"/>
+    <gzip zipfile="${dist.dir}/${package.name}-src.tar.gz" src="${package.name}-src.tar"/>
+
+    <delete file="${package.name}-src.tar"/>
+    <delete dir="${package.name}"/>
+
+  </target>
+
+<!--
+=====================================
+Jar-dist Target
+=====================================
+-->
+
+  <target 
+    name="jardist" 
+    depends="jar" 
+    description="build jar distribution"
+  >
+
+    <mkdir dir="${dist.dir}"/>
+
+    <copy file="${build.dir}\packages\${package}.jar" todir="${package.name}/lib"/>
+
+    <copy todir="${package.name}/bin">
+      <fileset dir="${bin.dir}"/>
+    </copy>
+
+    <copy todir="${package.name}">
+      <fileset dir="${basedir}">
+        <include name="LICENSE"/>
+        <include name="README"/>
+        <include name="CHANGES"/>
+      </fileset>
+    </copy>
+
+    <tar tarfile="${package.name}.tar" basedir="${basedir}" includes="${package.name}/"/>
+    <gzip zipfile="${dist.dir}/${package.name}.tar.gz" src="${package.name}.tar"/>
+
+    <delete file="${package.name}.tar"/>
+    <delete dir="${package.name}"/>
+
+  </target>
+
+<!--
+=====================================
+Jar Target
+=====================================
+-->
+
+  <target 
+    name="jar" 
+    depends="compile"
+    description="build executable jar"
+  >
+
+    <mkdir dir="${build.dir}/packages"/>
+
+    <jar 
+      jarfile="${build.dir}/packages/${package}.jar" 
+      basedir="${build.dir}/classes"
+      manifest="${manifest}"
+    />
+
+  </target>
+
+<!--
+=====================================
+Clean Target
+=====================================
+-->
+
+  <target name="clean" description="remove compiled files">
+
+    <delete dir="${build.dir}"/>
+
+  </target>
+
+<!--
+=====================================
+Distclean Target
+=====================================
+-->
+
+  <target 
+    name="distclean" 
+    depends="clean" 
+    description="remove all generated files"
+  >
+
+    <delete dir="${dist.dir}"/>
+
+    <delete>
+      <fileset dir="${basedir}" includes="${package.name}*"/>
+    </delete>
+
+    <delete dir="${package.name}"/>
+
+  </target>
+
+</project>

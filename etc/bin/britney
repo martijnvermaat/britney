@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Britney - A simple untyped Lambda Calculus interpreter
+#
+# This file is part of Britney.
+# See the file "LICENSE" for copyright information and the
+# terms and conditions for copying, distribution and
+# modification of Britney.
+
+java -jar ../lib/britney.jar

@@ -1,0 +1,82 @@
+/*
+
+Britney - A simple untyped Lambda Calculus interpreter
+
+This file is part of Britney.
+See the file "LICENSE" for copyright information and the
+terms and conditions for copying, distribution and
+modification of Britney.
+
+*/
+
+
+Package nl.vu.cs.mvermaat.britney.grammar;
+
+/*
+    This is a grammar for pure untyped Lambda Calculus
+*/
+
+
+Helpers
+
+letter          = [ ['a'..'z'] + ['A'..'Z'] ];
+digit           = [ '0'..'9' ];
+lambda          = '\';
+dot             = '.';
+
+
+Tokens
+
+head            = lambda;
+body            = dot;
+variable        = ( letter|digit )+;
+l_par           = '(';
+r_par           = ')';
+blank           = ' '*;
+
+
+Ignored Tokens
+
+blank;
+
+
+Productions
+
+expression {->term} = {abstraction} head bound
+                                    {-> bound.term }
+                    | {application} sub
+                                    {-> sub.term };
+
+sub {->term}        = {application} sub simple
+                                    {-> New term.application(sub.term, simple.term) }
+                    | {simple}      simple
+                                    {-> simple.term};
+
+simple {->term}     = {variable}    variable
+                                    {-> New term.variable(variable) }
+                    | {expression}  l_par expression r_par
+                                    {-> expression.term };
+
+bound {->term}      = {list}        variable bound
+                                    {-> New term.abstraction(variable, bound.term) }
+                    | {body}        body expression
+                                    {-> expression.term };
+
+
+/*
+                    | {abstraction} head variable body expression
+                                    {-> New term.abstraction(variable, expression.term) }
+
+    This concrete grammar has a problem. Expressions of the form
+    a \b.c
+    have to be written
+    a (\b.c)
+    even though they are unambiguous following general conventions.
+*/
+
+
+Abstract Syntax Tree
+
+term            = {variable}    variable
+                | {abstraction} variable term
+                | {application} [function]:term [argument]:term;

@@ -1,0 +1,224 @@
+-- Prelude for Britney - a lambda calculus interpreter
+-- Martijn Vermaat <mvermaat@cs.vu.nl>
+-- 2004-02-29
+
+-- This file is part of Britney.
+-- See the file "LICENSE" for copyright information and the
+-- terms and conditions for copying, distribution and
+-- modification of Britney.
+
+
+----------
+-- Some basic combinators
+----------
+
+
+-- Identity
+use
+    \x.x
+store
+    I
+
+
+-- Doubler
+use
+    \x.x x
+store
+    DOUBLE
+
+
+-- Omega
+use
+    DOUBLE DOUBLE
+store
+    OMEGA
+
+
+-- Fixed-point combinator
+use
+    \f.(\x.f(x x))(\x.f(x x))
+store
+    Y
+
+
+
+----------
+-- Church numerals and operations
+----------
+
+
+-- Zero
+use
+    \s z.z
+store
+    C0
+
+
+-- Successor function
+use
+    \x s z.s(x s z)
+store
+    SUC
+
+
+-- Predecessor function
+use
+    \c.c (\z.(z I (SUC z))) (\a.(\x.C0))
+normalize
+store
+    PRE
+
+
+-- 1
+use
+    SUC C0
+normalize
+store
+    C1
+
+
+-- 2
+use
+    SUC C1
+normalize
+store
+    C2
+
+
+-- 3
+use
+    SUC C2
+normalize
+store
+    C3
+
+
+-- 4
+use
+    SUC C3
+normalize
+store
+    C4
+
+
+-- 5
+use
+    SUC C4
+normalize
+store
+    C5
+
+
+-- 6
+use
+    SUC C5
+normalize
+store
+    C6
+
+
+-- 7
+use
+    SUC C6
+normalize
+store
+    C7
+
+
+-- 8
+use
+    SUC C7
+normalize
+store
+    C8
+
+
+-- 9
+use
+    SUC C8
+normalize
+store
+    C9
+
+
+-- Addition
+use
+    \x y s z.x s(y s z)
+store
+    PLUS
+
+
+-- Multiplication
+use
+    \x y s.x(y s)
+store
+    MUL
+
+
+-- Exponent
+use
+    \x y.y x
+store
+    EXP
+
+
+
+----------
+-- Pairing
+----------
+
+
+-- Pair constructor
+use
+    \l r z.z l r
+store
+    PAIR
+
+
+-- First projection
+use
+    \u.u(\l r.l)
+store
+    FIRST
+
+
+-- Second projection
+use
+    \u.u(\l r.r)
+store
+    SECOND
+
+
+
+----------
+-- Lists
+----------
+
+
+-- Empty list constructor
+use
+    \x y.y
+store
+    EMPTY
+
+
+-- Non-empty list constructor
+use
+    \h t z.z h t
+store
+    CONS
+
+
+-- Map
+use
+    Y (\m f l.l(\h t z.CONS(f h)(m f t))EMPTY)
+store
+    MAP
+
+
+-- Append
+use
+    Y (\a l r.l (\h t z.CONS h (a t r)) r)
+store
+    APPEND
+

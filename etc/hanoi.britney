@@ -1,0 +1,49 @@
+-- Towers of Hanoi solution in untyped pure Lambda Calculus
+-- Martijn Vermaat <mvermaat@cs.vu.nl>
+-- 2004-02-29
+
+-- This file is part of Britney.
+-- See the file "LICENSE" for copyright information and the
+-- terms and conditions for copying, distribution and
+-- modification of Britney.
+
+
+----------
+-- Usage:
+--
+-- HANOI [N] [from] [to] [using]
+--
+-- Where:
+--  N is the number of blocks to move (a Church numeral)
+--  from, to, and using are combinators or free variables
+--
+-- Returns:
+-- A list of pairs, where each pair denotes a move(from,to)
+--
+-- Example:
+-- > HANOI C3 left right middle
+----------
+
+
+use
+    Y ( \hanoi. \n . n (\x f t u. APPEND ( hanoi (PRE n) f u t) (CONS (PAIR f t) (hanoi (PRE n) u t f) ) ) (\f t u.EMPTY) )
+store
+    HANOI
+
+
+
+
+-- The following should be the solution to
+-- HANOI C2 left right middle
+--
+-- Test this with:
+-- > HANOI C2 left right middle
+-- > normalize
+-- > match
+
+use
+    CONS (PAIR left middle) ( CONS (PAIR left right) ( CONS (PAIR middle right) EMPTY ) )
+normalize
+store
+    SOLUTION2
+

@@ -1,0 +1,99 @@
+Britney - A simple untyped Lambda Calculus interpreter
+
+See the file "LICENSE" for copyright information and the
+terms and conditions for copying, distribution and
+modification of Britney.
+
+
+Compiling Britney from the source package can be done
+by a simple 'javac' on the 'src' directory.
+SableCC generated files are already present, so no
+need for SableCC on your machine.
+
+
+It is recommended to run Britney from the precompiled
+executable jar. A wrapper shell script can be found
+in 'bin':
+
+$ path-to-britney/bin/britney
+
+
+Add the Britney 'bin' directory to your PATH or create
+a link to 'bin/britney' from a directory already in
+your PATH for easy access to Britney.
+
+
+To use the definition files 'prelude' and 'hanoi':
+
+> britney prelude.britney hanoi.britney
+
+
+To view general or licensing information:
+
+> britney -info
+or
+> britney -license
+
+
+Available commands and a short description:
+
+use
+  Enter a lambda term to use as the current term.
+  All actions will always be applied to the current term.
+
+store
+  Enter a name to store the current term.
+  A possible term stored with the same name will be lost.
+
+print
+  Pretty-print the current term.
+
+structure
+  Pretty-print the current term with all parentheses.
+
+tree
+  Print the abstract syntax tree for the current term.
+
+reduce
+  Try to apply one Beta-reduction step to the current term.
+  The resulting term will be the new current term.
+
+normalize
+  Apply Beta-reduction steps as long as possible.
+  Maximum number of reductions is " MAX_TRIES_NORMALIZE .
+  The resulting term will be the new current term.
+
+stored
+  List all names of stored terms.
+
+match
+  The current term will be matched to all stored terms modulo
+  Alpha-conversion.
+
+-- [comment]
+  Anything on the line will be ignored.
+  Usefull to include comments in definition files.
+
+exit
+  Exit Britney.
+
+info
+  Print some information on Britney (version, credits, etc).
+
+All command line arguments, if present, will be interpreted as
+file names for definition files. All commands in these files
+will be executed on startup.
+
+Example usage:
+
+  > use
+  Term: \x.x
+  Current term: \x.x
+  > store
+  Name: I
+  > use
+  Term: (\y.y y) I
+  Current term: (\y.y y) \x.x
+  > normalize
+  Number of reductions: 2
+  Current term: \x.x

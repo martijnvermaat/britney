@@ -1,0 +1,19 @@
+Britney - A simple untyped Lambda Calculus interpreter
+
+This file is part of Britney.
+See the file "LICENSE" for copyright information and the
+terms and conditions for copying, distribution and
+modification of Britney.
+
+
+Change history:
+
+0.1 - 2004/03/01
+Initial release.
+
+0.2 - 2003/03/02
+Changed algorithm for generating variable names.
+
+0.2 - 2004/08/09
+Overhauled project structure, added Ant build file, and
+created an Subversion repository entry for Britney.
