@@ -7,4 +7,6 @@
 # terms and conditions for copying, distribution and
 # modification of Britney.
 
-java -jar ../lib/britney.jar $*
+# Provide the absolute path to britney.jar below!
+
+java -jar /usr/share/britney/lib/britney.jar $*

@@ -17,3 +17,7 @@ Changed algorithm for generating variable names.
 0.3 - 2004/08/17
 Overhauled project structure, added Ant build file, and
 created a Subversion repository entry for Britney.
+
+0.3.1 - 2004/08/30
+Changed source package contents, added definition files,
+and wrote website documentation.

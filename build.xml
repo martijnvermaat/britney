@@ -45,7 +45,7 @@ Global Properties
 -->
 
   <property name="package" value="britney"/>
-  <property name="version" value="0.3"/>
+  <property name="version" value="0.3.1"/>
 
   <property name="package.name" value="${package}-${version}"/>
 
@@ -53,6 +53,7 @@ Global Properties
   <property name="build.dir" value="build"/>
   <property name="dist.dir" value="dist"/>
   <property name="bin.dir" value="etc/bin"/>
+  <property name="defs.dir" value="etc/definitions"/>
 
   <property name="manifest" value="etc/manifest"/>
 
@@ -134,38 +135,17 @@ Srcdist Target
   <target 
     name="srcdist"
     depends="sablecc,jar"
-    description="build distribution including source"
+    description="build distribution of project source"
   >
 
     <mkdir dir="${dist.dir}"/>
 
-    <copy todir="${package.name}/src" includeEmptyDirs="no">
-      <fileset dir="${src.dir}/java">
-        <include name="**/*.java"/>
-      </fileset>
-    </copy>
-
-    <copy file="${build.dir}\packages\${package}.jar" todir="${package.name}/lib"/>
-
-    <copy todir="${package.name}/bin">
-      <fileset dir="${bin.dir}"/>
-    </copy>
-
-    <copy file="${manifest}" todir="${package.name}/etc"/>
-
-    <copy todir="${package.name}">
-      <fileset dir="${basedir}">
-        <include name="LICENSE"/>
-        <include name="README"/>
-        <include name="CHANGES"/>
-      </fileset>
-    </copy>
-
-    <tar tarfile="${package.name}-src.tar" basedir="${basedir}" includes="${package.name}/"/>
+    <tar tarfile="${package.name}-src.tar">
+      <tarfileset dir="${basedir}" excludes="build/**,dist/**,**/.svn" prefix="britney"/>
+    </tar>
     <gzip zipfile="${dist.dir}/${package.name}-src.tar.gz" src="${package.name}-src.tar"/>
 
     <delete file="${package.name}-src.tar"/>
-    <delete dir="${package.name}"/>
 
   </target>
 
@@ -189,6 +169,10 @@ Jar-dist Target
       <fileset dir="${bin.dir}"/>
     </copy>
 
+    <copy todir="${package.name}/definitions">
+      <fileset dir="${defs.dir}"/>
+    </copy>
+
     <copy todir="${package.name}">
       <fileset dir="${basedir}">
         <include name="LICENSE"/>
@@ -197,7 +181,12 @@ Jar-dist Target
       </fileset>
     </copy>
 
-    <tar tarfile="${package.name}.tar" basedir="${basedir}" includes="${package.name}/"/>
+    <tar
+      tarfile="${package.name}.tar"
+      basedir="${basedir}"
+      includes="${package.name}/"
+      excludes="**/.svn"
+    />
     <gzip zipfile="${dist.dir}/${package.name}.tar.gz" src="${package.name}.tar"/>
 
     <delete file="${package.name}.tar"/>

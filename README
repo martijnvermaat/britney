@@ -6,14 +6,15 @@ modification of Britney.
 
 
 Compiling Britney from the source package can be done
-by a simple 'javac' on the 'src' directory.
-SableCC generated files are already present, so no
-need for SableCC on your machine.
+simply by running 'ant' in the base directory. SableCC
+generated files are already present, so no need for
+SableCC on your machine.
 
 
 It is recommended to run Britney from the precompiled
 executable jar. A wrapper shell script can be found
-in 'bin':
+in 'bin' (make sure to set the absolute path to the
+jar file and make the script executable):
 
 $ path-to-britney/bin/britney
 

@@ -25,8 +25,8 @@ public class Britney {
 
     public static final String
         AUTHOR = "Martijn Vermaat (mvermaat@cs.vu.nl)",
-        VERSION = "0.3",
-        BUILD_DATE = "2004/08/09";
+        VERSION = "0.3.1",
+        BUILD_DATE = "2004/08/30";
 
     private final static int MAX_TRIES_NORMALIZE = 4000,
                              MAX_LINES_TERMINAL = 18;
