@@ -26,14 +26,14 @@ your PATH for easy access to Britney.
 
 To use the definition files 'prelude' and 'hanoi':
 
-> britney prelude.britney hanoi.britney
+$ britney prelude.britney hanoi.britney
 
 
 To view general or licensing information:
 
-> britney -info
+$ britney -info
 or
-> britney -license
+$ britney -license
 
 
 Available commands and a short description:
